@@ -9,6 +9,11 @@
 $ git clone https://github.com/mayankamencherla/web-scraper.git
 ```
 
+## Reading List
+> Some good reading guides to understand web crawlers
+1. **[Web Crawler Architecture](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/09/EDS-WebCrawlerArchitecture.pdf)**
+2. **[Wikipedia](https://en.wikipedia.org/wiki/Web_crawler)**
+
 ## Setup Locally
 > To get the app working locally, or to run test cases, follow the instructions below.
 > After setting up the app, details on each API and how to use it can be found below in the **[API's available on this app](https://github.com/mayankamencherla/web-scraper#apis-available-on-this-app)** section.
