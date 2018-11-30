@@ -33,7 +33,12 @@ $ git clone https://github.com/mayankamencherla/web-scraper.git
 $ npm install
 ```
 
-3. Start the HTTP server:
+3. Create the .env file and modify the default values that have been set in .env.sample
+```bash
+$ cp .env.sample .env
+```
+
+4. Start the HTTP server:
 ```bash
 $ npm run start
 ```

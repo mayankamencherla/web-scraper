@@ -3,9 +3,13 @@ const cheerio            = require('cheerio');
 const url                = require('url');
 const { getAbsoluteUrl } = require('../helpers');
 const Parallel           = require('async-parallel');
+const Configuration      = require('../configuration');
 
-// TODO: Make this a config variable
-const concurrency = 4;
+const config = new Configuration();
+
+const concurrency = config.get('concurrency') || 1;
+
+console.log(`Setting up request queue with concurrency of ${concurrency}`);
 
 Parallel.setConcurrency(concurrency);
 
