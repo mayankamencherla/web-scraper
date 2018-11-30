@@ -23,6 +23,11 @@ app.get('/', (req, res) => {
     var makeRequest = (link, callback) => {
         var startTime = new Date().getTime();
 
+        // Just simply
+        // if (Object.keys(adjacency).length >= 40) {
+        //     return;
+        // }
+
         request(link, (error, response, body) => {
             console.log(`Making a request to ${link}`);
 
@@ -30,13 +35,7 @@ app.get('/', (req, res) => {
 
             pageObject.links = [];
 
-            var endTime = new Date().getTime();
-            var requestTime = endTime - startTime;
-            pageObject.requestTime = requestTime;
-
             var $ = cheerio.load(body);
-            pageObject.title = $('title').text();
-            pageObject.url = link;
 
             $('a').each((i, elem) => {
               /*
@@ -59,11 +58,6 @@ app.get('/', (req, res) => {
 
             // console.log(`Callback with ${Object.keys(adjacency).length} keys`);
 
-            // Just simply
-            if (Object.keys(adjacency).length >= 30) {
-                return;
-            }
-
             crawled.push(link);
 
             adjacency[link] = [];
@@ -84,21 +78,25 @@ app.get('/', (req, res) => {
             }
 
             async.eachSeries(pageObject.links, (item, cb) => {
-                var parsedUrl = url.parse(item.linkUrl);
 
-                if (parsedUrl.protocol === 'https:' &&
-                    parsedUrl.hostname &&
-                    parsedUrl.hostname.includes(baseHostName) &&
-                    !crawled.includes(item.linkUrl) &&
-                    !inbound.includes(item.linkUrl)) {
+                if (item && item.linkUrl && item.linkUrl !== undefined) {
 
-                    // console.log(`Crawling... ${item.linkUrl}`);
+                    var parsedUrl = url.parse(item.linkUrl);
 
-                    adjacency[link].push(item.linkUrl);
+                    if (parsedUrl.protocol === 'https:' &&
+                        parsedUrl.hostname &&
+                        parsedUrl.hostname.includes(baseHostName) &&
+                        !crawled.includes(item.linkUrl) &&
+                        !inbound.includes(item.linkUrl)) {
 
-                    inbound.push(item.linkUrl);
+                        // console.log(`Crawling... ${item.linkUrl}`);
+
+                        adjacency[link].push(item.linkUrl);
+
+                        inbound.push(item.linkUrl);
+                    }
+                    cb();
                 }
-                cb();
             },
             loopLinks);
         });
