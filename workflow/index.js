@@ -53,7 +53,7 @@ class Workflow {
     /**
      * Runs a pending task
      * @param task
-     * @return true
+     * @return bool
      */
     async runTask(task) {
        var elems = task.input;
@@ -82,15 +82,25 @@ class Workflow {
 
     /**
      * Recursively runs the set of pending tasks
+     * @return bool
      */
     async runTasks() {
         if (!this.pendingTasks()) return;
 
         var task = this.popFrontTask();
 
-        await this.runTask(task);
+        try {
+            await this.runTask(task);
 
-        await this.runTasks();
+            await this.runTasks();
+
+        } catch (e) {
+            console.log(`Tasks were not processed`);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -2,6 +2,7 @@ const expect  = require('expect');
 const request = require('supertest');
 
 const Workflow = require('../workflow');
+const Deps     = require('./dummy-deps');
 
 const workflow = new Workflow();
 
@@ -47,5 +48,26 @@ describe('Tests workflow class', () => {
         expect(workflow.pendingTasks()).toEqual(false);
 
         done();
+    });
+
+    it ('Processes the tasks in the queue', async () => {
+
+        var urls = ['https://www.monzo.com', 'https://www.manutd.com', 'https://www.uiuc.com'];
+
+        var task1 = {
+            input: urls,
+            callback: 'dummy',
+            retries: 3
+        };
+
+        workflow.addParallelTask(task1.input, task1.callback, task1.retries);
+
+        var d = new Deps();
+
+        workflow.setDependency(d);
+
+        var res = await workflow.runTasks();
+
+        expect(res).toEqual(true);
     });
 });
