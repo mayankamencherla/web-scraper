@@ -40,7 +40,7 @@ class RequestQueue {
             url = this.base + url;
         }
 
-        return url
+        return url;
     }
 
     /**
@@ -88,11 +88,12 @@ class RequestQueue {
 
     /**
      * Sets up the crawler job queue
+     * @param limit
      */
-    async crawl() {
+    async crawl(limit) {
         this.discovered.push(this.base);
 
-        while (this.discovered.length > 0) {
+        while (this.discovered.length > 0 && this.sitemap.numCrawled() <= limit) {
             var url = this.discovered[0];
 
             this.discovered.splice(0, 1);

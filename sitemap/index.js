@@ -3,8 +3,9 @@
  * relationship between parent sites and children
  */
  class Sitemap {
-    constructor() {
+    constructor(base) {
         this.map = {};
+        this.base = base;
     }
 
     /**
@@ -32,6 +33,37 @@
         if (!this.parentInMap(parent)) this.addParent(parent);
 
         this.map[parent].push(child);
+    }
+
+    /**
+     * Returns the number of crawled sites
+     */
+    numCrawled() {
+        return Object.keys(this.map).length;
+    }
+
+    /**
+     * Prints the DFS tree
+     * @param link
+     * @param spaces
+     */
+    depthFirstSearch(link, spaces) {
+        console.log('-'.repeat(spaces*3) + link);
+
+        if (!this.map.hasOwnProperty(link)) return;
+
+        for (var child of this.map[link]) {
+            this.depthFirstSearch(child, spaces+1);
+        }
+    }
+
+    /**
+     * Prints the sitemap
+     */
+    print() {
+        console.log(`\n---------\nPrinting the site map of ${this.base}\n---------\n`);
+
+        this.depthFirstSearch(this.base, 0);
     }
  }
 
