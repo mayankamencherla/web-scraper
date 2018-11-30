@@ -2,6 +2,12 @@ const axios              = require('axios');
 const cheerio            = require('cheerio');
 const url                = require('url');
 const { getAbsoluteUrl } = require('../helpers');
+const Parallel           = require('async-parallel');
+
+// TODO: Make this a config variable
+const concurrency = 4;
+
+Parallel.setConcurrency(concurrency);
 
 /**
  * Maintains list of urls that have been crawled
@@ -74,19 +80,36 @@ class RequestQueue {
     }
 
     /**
+     * Gets the tuples of urls that we want to crawl
+     * @param remaining
+     * @return urls
+     */
+    getUrlTupes(remaining) {
+        var len = Math.min(remaining, Math.min(concurrency, this.discovered.length));
+
+        var urls = this.discovered.slice(0, len);
+
+        this.discovered.splice(0, len);
+
+        return urls;
+    }
+
+    /**
      * Sets up the crawler job queue
      * @param limit
      */
     async crawl(limit) {
         this.discovered.push(this.base);
 
-        // TODO: Add some concurrency here
-        while (this.discovered.length > 0 && this.sitemap.numCrawled() <= limit) {
-            var url = this.discovered[0];
+        while (this.discovered.length > 0 && this.sitemap.numCrawled() < limit) {
 
-            this.discovered.splice(0, 1);
+            var remaining = limit - this.sitemap.numCrawled();
 
-            await this.crawlLink(url);
+            var urls = this.getUrlTupes(remaining);
+
+            // TODO: Failure cases : Retry logic
+            // Workflow.Build
+            await Parallel.map(urls, (url) => this.crawlLink(url));
         }
 
         this.clear();
