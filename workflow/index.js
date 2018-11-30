@@ -3,7 +3,7 @@ const Configuration      = require('../configuration');
 
 const config = new Configuration();
 
-const concurrency = config.get('concurrency') || 1;
+const concurrency = config.get('CONCURRENCY') || 1;
 
 console.log(`Setting up request queue with concurrency of ${concurrency}`);
 

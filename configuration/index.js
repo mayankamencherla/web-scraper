@@ -22,8 +22,6 @@ class Configuration {
      * @return value | undefined
      */
     get(key) {
-        key = key.toUpperCase();
-
         if (this.contains(key)) {
             return this.config[key];
         }
