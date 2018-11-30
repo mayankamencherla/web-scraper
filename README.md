@@ -19,6 +19,7 @@ $ git clone https://github.com/mayankamencherla/web-scraper.git
 > Some good reading guides to understand web crawlers
 1. **[Web Crawler Architecture](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/09/EDS-WebCrawlerArchitecture.pdf)**
 2. **[Wikipedia](https://en.wikipedia.org/wiki/Web_crawler)**
+3. **[Web Crawling by Princeton](http://www.cs.princeton.edu/courses/archive/spr11/cos435/Notes/web_crawling_topost.pdf)**
 
 ## Setup Locally
 > To get the app working locally, or to run test cases, follow the instructions below.

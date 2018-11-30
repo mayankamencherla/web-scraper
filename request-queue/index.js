@@ -38,6 +38,7 @@ class RequestQueue {
 
         try {
 
+            // TODO: Check if there's a better async library
             const response = await axios.get(link);
 
             console.log(`Fetching the children of ${link}`);
@@ -79,6 +80,7 @@ class RequestQueue {
     async crawl(limit) {
         this.discovered.push(this.base);
 
+        // TODO: Add some concurrency here
         while (this.discovered.length > 0 && this.sitemap.numCrawled() <= limit) {
             var url = this.discovered[0];
 
