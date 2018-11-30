@@ -4,6 +4,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- [![Packagist](https://img.shields.io/packagist/v/symfony/symfony.svg)]() -->
 
+<p align="center">
+    <a href="https://en.wikipedia.org/wiki/Web_crawler">
+        <img src="https://github.com/mayankamencherla/web-scraper/blob/master/web-crawler.jpg" />
+    </a>
+</p>
+
 ## Downloading
 ```bash
 $ git clone https://github.com/mayankamencherla/web-scraper.git
