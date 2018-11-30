@@ -87,7 +87,17 @@ class RequestQueue {
             await this.crawlLink(url);
         }
 
+        this.clear();
+
         console.log(`We are done with crawling the site: ${this.base}`);
+    }
+
+    /**
+     * Clears the request and crawled queues
+     */
+    clear() {
+        this.discovered = [];
+        this.crawled = [];
     }
 
     /**
