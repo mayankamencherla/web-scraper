@@ -181,11 +181,7 @@ class RequestQueue {
      * Creates the workflow and sets the dependency object to be this object
      */
     setWorkflow() {
-        // TODO: Refactor this into a Build pattern
-        // TODO: Remove setDep method
-        this.workflow = new Workflow();
-
-        this.workflow.setDependency(this);
+        this.workflow = Workflow.Build(this);
     }
 }
 

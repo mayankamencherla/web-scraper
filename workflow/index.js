@@ -104,6 +104,19 @@ class Workflow {
     }
 
     /**
+     * Builds a workflow instance and returns it
+     * @param deps
+     * @return Workflow
+     */
+    static Build(deps) {
+        const workflow = new Workflow();
+
+        workflow.setDependency(deps);
+
+        return workflow;
+    }
+
+    /**
      * Sets the dependency object that is using this workflow
      * @param deps
      */
