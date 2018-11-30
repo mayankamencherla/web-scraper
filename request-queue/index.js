@@ -2,16 +2,12 @@ const axios              = require('axios');
 const cheerio            = require('cheerio');
 const url                = require('url');
 const { getAbsoluteUrl } = require('../helpers');
-const Parallel           = require('async-parallel');
+const Workflow           = require('../workflow');
 const Configuration      = require('../configuration');
 
 const config = new Configuration();
 
 const concurrency = config.get('concurrency') || 1;
-
-console.log(`Setting up request queue with concurrency of ${concurrency}`);
-
-Parallel.setConcurrency(concurrency);
 
 /**
  * Maintains list of urls that have been crawled
@@ -23,6 +19,8 @@ class RequestQueue {
         this.discovered = [];
         this.sitemap = sitemap;
         this.base = base;
+
+        this.setWorkflow();
     }
 
     /**
@@ -80,6 +78,8 @@ class RequestQueue {
 
         this.sitemap.addParent(link);
 
+        // TODO: What if this fails mid way?
+        // Add this as a task in the workflow builder
         await this.fetchChildren(link);
     }
 
@@ -111,9 +111,14 @@ class RequestQueue {
 
             var urls = this.getUrlTuples(remaining);
 
-            // TODO: Failure cases : Retry logic
-            // Workflow.Build
-            await Parallel.map(urls, (url) => this.crawlLink(url));
+            // Do 3 retries
+            // If 1 concurrent request dies, and the others succeed,
+            // the parent urls would have been added to the site map
+            // Therefore, we would not be running those requests again
+            // Only the failed request will be retried in the retry logic
+            this.workflow.addParallelTask(urls, 'crawlLink', 3);
+
+            await this.workflow.runTasks();
         }
 
         this.clear();
@@ -170,6 +175,17 @@ class RequestQueue {
         return parsed.protocol === 'https:' &&
                parsed.hostname &&
                parsed.hostname.includes(this.getBaseHostName());
+    }
+
+    /**
+     * Creates the workflow and sets the dependency object to be this object
+     */
+    setWorkflow() {
+        // TODO: Refactor this into a Build pattern
+        // TODO: Remove setDep method
+        this.workflow = new Workflow();
+
+        this.workflow.setDependency(this);
     }
 }
 
