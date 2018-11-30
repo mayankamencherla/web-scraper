@@ -88,9 +88,12 @@ class RequestQueue {
 
         this.sitemap.addParent(link);
 
-        // TODO: What if this fails mid way?
-        // Add this as a task in the workflow builder
-        await this.fetchChildren(link);
+        // Run the web crawler on a different workflow
+        // This is so that each individual sub crawler has a retry option
+        // before the parallel crawler fails and retries all together
+        await Workflow.Build(this)
+                      .addParallelTask([link], 'fetchChildren', 3)
+                      .runTasks();
     }
 
     /**
@@ -126,9 +129,9 @@ class RequestQueue {
             // the parent urls would have been added to the site map
             // Therefore, we would not be running those requests again
             // Only the failed request will be retried in the retry logic
-            this.workflow.addParallelTask(urls, 'crawlLink', 3);
-
-            await this.workflow.runTasks();
+            await this.workflow
+                .addParallelTask(urls, 'crawlLink', 3)
+                .runTasks();
         }
 
         this.clear();

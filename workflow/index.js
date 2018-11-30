@@ -28,6 +28,8 @@ class Workflow {
         };
 
         this.tasks.push(task);
+
+        return this;
     }
 
     /**
