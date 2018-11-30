@@ -45,10 +45,9 @@ $ npm run test
 ```
 
 ## API's available on this app
-> This app supports 2 API's currently
+> This app supports 1 API currently
 
-1. GET <a href="http://localhost:3000" target="_blank">/</a>
-   - Starts the crawler
-
-2. GET <a href="http://localhost:3000/print" target="_blank">/print</a>
-   - Print the site map of the crawled base url
+1. GET <a href="http://localhost:3000/?url={url}" target="_blank">/?url={url}</a>
+   - Starts the crawler with the given url
+   - Prints the sitemap structure
+   - Example: http://localhost:3000/?url=https://www.monzo.com

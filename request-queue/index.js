@@ -84,7 +84,7 @@ class RequestQueue {
      * @param remaining
      * @return urls
      */
-    getUrlTupes(remaining) {
+    getUrlTuples(remaining) {
         var len = Math.min(remaining, Math.min(concurrency, this.discovered.length));
 
         var urls = this.discovered.slice(0, len);
@@ -105,7 +105,7 @@ class RequestQueue {
 
             var remaining = limit - this.sitemap.numCrawled();
 
-            var urls = this.getUrlTupes(remaining);
+            var urls = this.getUrlTuples(remaining);
 
             // TODO: Failure cases : Retry logic
             // Workflow.Build

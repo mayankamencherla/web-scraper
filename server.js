@@ -1,22 +1,26 @@
 const express      = require('express');
 const RequestQueue = require('./request-queue');
 const Sitemap      = require('./sitemap');
-
-const base = 'https://www.monzo.com';
+const validUrl     = require('valid-url');
 
 var app   = express();
-const map = new Sitemap(base);
-const rq  = new RequestQueue(map, base);
-
 
 app.get('/', async (req, res) => {
-    await rq.crawl(20);
 
-    map.print();
-});
+    if (req.query.hasOwnProperty('url') && validUrl.isUri(req.query.url)) {
+        const base = req.query.url;
 
-app.get('/print', (req, res) => {
-    map.print();
+        const map = new Sitemap(base);
+        const rq  = new RequestQueue(map, base);
+
+        await rq.crawl(20);
+
+        map.print();
+    } else {
+        console.log(`User input url invalid`);
+
+        res.status(400);
+    }
 });
 
 app.listen('3000', () => {
