@@ -51,7 +51,11 @@ describe('Tests RequestQueue / Sitemap classes', () => {
 
         expect(map.numCrawled()).toBeGreaterThanOrEqual(3);
 
-        var res = map.depthFirstSearch(base, 0);
+        var res = map.toJson();
+
+        expect(res.length).toBeGreaterThanOrEqual(0);
+
+        res = map.depthFirstSearch(base, 0);
 
         expect(res.length).toBeGreaterThanOrEqual(0);
     })

@@ -57,7 +57,7 @@
      * @param spaces
      */
     depthFirstSearch(link, spaces) {
-        var res = '-'.repeat(spaces*3) + link;
+        var res = '-'.repeat(spaces*4) + link;
 
         console.log(res);
 
@@ -70,6 +70,12 @@
         }
 
         return res;
+    }
+
+    toJson() {
+        var str = JSON.stringify(this.map, null, 2);
+
+        return str;
     }
 
     /**
