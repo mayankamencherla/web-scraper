@@ -153,10 +153,10 @@ class RequestQueue {
     /**
      * Returns the base url's host name
      */
-    getBaseHostName() {
+    getBaseDomainName() {
         var parsed = url.parse(this.base);
 
-        return parsed.hostname;
+        return parsed.hostname.split('.')[1];
     }
 
     /**
@@ -174,7 +174,7 @@ class RequestQueue {
     validateUrlFormat(parsed) {
         return parsed.protocol === 'https:' &&
                parsed.hostname &&
-               parsed.hostname.includes(this.getBaseHostName());
+               parsed.hostname.includes(this.getBaseDomainName());
     }
 
     /**
