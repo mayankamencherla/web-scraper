@@ -95,6 +95,7 @@ app.get('/', (req, res) => {
 
                         inbound.push(item.linkUrl);
                     }
+
                     cb();
                 }
             },
