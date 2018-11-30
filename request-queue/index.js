@@ -1,6 +1,7 @@
-const axios   = require('axios');
-const cheerio = require('cheerio');
-const url     = require('url');
+const axios              = require('axios');
+const cheerio            = require('cheerio');
+const url                = require('url');
+const { getAbsoluteUrl } = require('../helpers');
 
 /**
  * Maintains list of urls that have been crawled
@@ -16,7 +17,6 @@ class RequestQueue {
 
     /**
      * Return whether the link is valid
-     * TODO: Move to helpers
      * @param link
      */
     validateUrl(link) {
@@ -27,20 +27,6 @@ class RequestQueue {
         return this.validateUrlFormat(parsed) &&
                !this.alreadyCrawled(link) &&
                !this.alreadyDiscovered(link);
-    }
-
-    /**
-     * Modify the url to absolute if relative
-     * TODO: Move to helpers
-     * @param url
-     * @return url
-     */
-    getAbsoluteUrl (url) {
-        if (url && url.length > 1 && url[0] == '/') {
-            url = this.base + url;
-        }
-
-        return url;
     }
 
     /**
@@ -59,7 +45,7 @@ class RequestQueue {
             var $ = cheerio.load(response.data);
 
             $('a').each((i, elem) => {
-                var url = this.getAbsoluteUrl(elem.attribs.href);
+                var url = getAbsoluteUrl(elem.attribs.href, this.base);
 
                 if (!this.validateUrl(url)) return;
 

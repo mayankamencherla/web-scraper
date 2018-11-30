@@ -11,6 +11,8 @@ const rq  = new RequestQueue(map, base);
 
 app.get('/', async (req, res) => {
     await rq.crawl(20);
+
+    map.print();
 });
 
 app.get('/print', (req, res) => {
