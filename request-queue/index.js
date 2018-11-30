@@ -105,7 +105,7 @@ class RequestQueue {
      * @param link
      */
     alreadyCrawled(link) {
-        return this.crawled.includes(link);
+        return this.sitemap.parentInMap(link);
     }
 
     /**
@@ -123,6 +123,14 @@ class RequestQueue {
         var parsed = url.parse(this.base);
 
         return parsed.hostname;
+    }
+
+    /**
+     * Modify base
+     * @param base
+     */
+    setBase(base) {
+        this.base = base;
     }
 
     /**
