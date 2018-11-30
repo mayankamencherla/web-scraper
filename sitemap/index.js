@@ -48,13 +48,19 @@
      * @param spaces
      */
     depthFirstSearch(link, spaces) {
-        console.log('-'.repeat(spaces*3) + link);
+        var res = '-'.repeat(spaces*3) + link;
+
+        console.log(res);
+
+        res += '\n';
 
         if (!this.map.hasOwnProperty(link)) return;
 
         for (var child of this.map[link]) {
-            this.depthFirstSearch(child, spaces+1);
+            res += this.depthFirstSearch(child, spaces+1);
         }
+
+        return res;
     }
 
     /**
