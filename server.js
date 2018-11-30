@@ -15,6 +15,9 @@ var app = express();
 var crawled = [];
 var inbound = [];
 
+// Url mapped to all its child links
+var adjacency = {};
+
 app.get('/', (req, res) => {
 
     var makeRequest = (link, callback) => {
@@ -52,18 +55,29 @@ app.get('/', (req, res) => {
     var loop = (link) => {
         makeRequest(link, (err, pageObject) => {
 
-            // console.log(`Callback with ${pageObject.links.length} links`);
+            // Create an adjacency matrix and print the graph using breadth first search
+
+            // console.log(`Callback with ${Object.keys(adjacency).length} keys`);
+
+            // Just simply
+            if (Object.keys(adjacency).length >= 30) {
+                return;
+            }
 
             crawled.push(link);
 
+            adjacency[link] = [];
+
             // Avoid making http and https requests to same link
             var loopLinks = () => {
-                var nextLinks = _.difference(_.uniq(inbound), crawled);
+                // console.log(`${crawled.length} links have been crawled and there are ${inbound.length} still remaining`);
 
-                // console.log(`${crawled.length} links have been crawled and there are ${nextLinks.length} still remaining`);
+                if (inbound.length > 0) {
+                    var nextLink = inbound[0];
 
-                if (nextLinks.length > 0) {
-                    loop(nextLinks[0]);
+                    inbound.splice(0, 1);
+
+                    loop(nextLink);
                 } else {
                     console.log('Done!');
                 }
@@ -72,7 +86,16 @@ app.get('/', (req, res) => {
             async.eachSeries(pageObject.links, (item, cb) => {
                 var parsedUrl = url.parse(item.linkUrl);
 
-                if (parsedUrl.hostname && parsedUrl.hostname.includes(baseHostName)) {
+                if (parsedUrl.protocol === 'https:' &&
+                    parsedUrl.hostname &&
+                    parsedUrl.hostname.includes(baseHostName) &&
+                    !crawled.includes(item.linkUrl) &&
+                    !inbound.includes(item.linkUrl)) {
+
+                    // console.log(`Crawling... ${item.linkUrl}`);
+
+                    adjacency[link].push(item.linkUrl);
+
                     inbound.push(item.linkUrl);
                 }
                 cb();
@@ -82,6 +105,22 @@ app.get('/', (req, res) => {
     };
 
     loop(base);
+});
+
+app.get('/print', (req, res) => {
+
+    var printAdjList = (link, spaces) => {
+
+        console.log('-'.repeat(spaces*3) + link);
+
+        if (!adjacency.hasOwnProperty(link)) return;
+
+        for (var child of adjacency[link]) {
+            printAdjList(child, spaces+1);
+        }
+    }
+
+    printAdjList(base, 0);
 });
 
 app.listen('3000', () => {
