@@ -5,6 +5,13 @@ class Deps {
     constructor() {}
 
     /**
+     * Returns a new instance of this class
+     */
+    static Build() {
+        return new Deps();
+    }
+
+    /**
      * Logs the item being processed by the workflow task queue
      * @param item
      */

@@ -8,6 +8,13 @@ class Configuration {
     }
 
     /**
+     * Returns a new instance of this class
+     */
+    static Build() {
+        return new Configuration();
+    }
+
+    /**
      * Returns whether key is in the config
      * @param key
      * @return bool

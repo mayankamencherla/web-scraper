@@ -4,7 +4,9 @@ const request = require('supertest');
 const Workflow = require('../workflow');
 const Deps     = require('./dummy-deps');
 
-const workflow = new Workflow();
+var d = Deps.Build();
+
+const workflow = Workflow.Build(d);
 
 describe('Tests workflow class', () => {
 
@@ -61,10 +63,6 @@ describe('Tests workflow class', () => {
         };
 
         workflow.addParallelTask(task1.input, task1.callback, task1.retries);
-
-        var d = new Deps();
-
-        workflow.setDependency(d);
 
         var res = await workflow.runTasks();
 

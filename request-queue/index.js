@@ -5,7 +5,7 @@ const { getAbsoluteUrl } = require('../helpers');
 const Workflow           = require('../workflow');
 const Configuration      = require('../configuration');
 
-const config = new Configuration();
+const config = Configuration.Build();
 
 const concurrency = config.get('CONCURRENCY') || 1;
 
@@ -21,6 +21,16 @@ class RequestQueue {
         this.base = base;
 
         this.setWorkflow();
+    }
+
+    /**
+     * Returns a new instance of RequestQueue
+     * @param sitemap
+     * @param base
+     * @return RequestQueue
+     */
+    static Build(sitemap, base) {
+        return new RequestQueue(sitemap, base);
     }
 
     /**

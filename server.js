@@ -10,8 +10,8 @@ app.get('/', async (req, res) => {
     if (req.query.hasOwnProperty('url') && validUrl.isUri(req.query.url)) {
         const base = req.query.url;
 
-        const map = new Sitemap(base);
-        const rq  = new RequestQueue(map, base);
+        const map = Sitemap.Build(base);
+        const rq  = RequestQueue.Build(map, base);
 
         await rq.crawl(20);
 

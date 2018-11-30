@@ -1,7 +1,7 @@
 const Parallel           = require('async-parallel');
 const Configuration      = require('../configuration');
 
-const config = new Configuration();
+const config = Configuration.Build();
 
 const concurrency = config.get('CONCURRENCY') || 1;
 

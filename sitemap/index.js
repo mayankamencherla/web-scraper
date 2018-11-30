@@ -9,6 +9,15 @@
     }
 
     /**
+     * Returns a new Sitemap instance
+     * @param base
+     * @return Sitemap
+     */
+    static Build(base) {
+        return new Sitemap(base);
+    }
+
+    /**
      * Adds a parent to the sitemap
      * @param link
      */

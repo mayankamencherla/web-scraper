@@ -7,8 +7,8 @@ const Sitemap      = require('../sitemap');
 
 const base = 'https://www.monzo.com';
 
-const map = new Sitemap(base);
-const rq  = new RequestQueue(map, base);
+const map = Sitemap.Build(base);
+const rq  = RequestQueue.Build(map, base);
 
 describe('Tests RequestQueue / Sitemap classes', () => {
 
