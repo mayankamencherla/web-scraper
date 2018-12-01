@@ -132,6 +132,7 @@ class RequestQueue {
     async crawl(limit) {
         this.discovered.push(this.base);
 
+        // TODO: Add a timeout feature so that crawler exits
         while (this.discovered.length > 0 && this.sitemap.numCrawled() < limit) {
 
             var remaining = limit - this.sitemap.numCrawled();
