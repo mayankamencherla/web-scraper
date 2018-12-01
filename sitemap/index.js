@@ -72,6 +72,10 @@
         return res;
     }
 
+    /**
+     * Returns the sitemap as a JSON string
+     * @return string
+     */
     toJson() {
         var str = JSON.stringify(this.map, null, 2);
 

@@ -1,5 +1,6 @@
 const Parallel           = require('async-parallel');
 const Configuration      = require('../configuration');
+const Task               = require('./task');
 
 const config = Configuration.Build();
 
@@ -21,11 +22,7 @@ class Workflow {
      * @param retries
      */
     addParallelTask(input, callback, retries) {
-        var task = {
-            input,
-            callback,
-            retries
-        };
+        var task = Task.Build(input, callback, retries);
 
         this.tasks.push(task);
 
@@ -58,11 +55,11 @@ class Workflow {
      * @return bool
      */
     async runTask(task) {
-       var elems = task.input;
+       var elems = task.getInput();
 
-       var numTry = task.retries;
+       var numTry = task.getRetries();
 
-       var method = task.callback;
+       var method = task.getCallback();
 
        while (numTry > 0) {
 
@@ -79,6 +76,8 @@ class Workflow {
 
        console.log(`Unable to run task`);
 
+       // TODO: Queue the task to the end of the queue
+
        return false;
     }
 
@@ -91,16 +90,9 @@ class Workflow {
 
         var task = this.popFrontTask();
 
-        try {
-            await this.runTask(task);
+        await this.runTask(task);
 
-            await this.runTasks();
-
-        } catch (e) {
-            console.log(`Tasks were not processed`);
-
-            return false;
-        }
+        await this.runTasks();
 
         return true;
     }

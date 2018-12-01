@@ -24,7 +24,7 @@ $ git clone https://github.com/mayankamencherla/web-scraper.git
 2. **[Wikipedia](https://en.wikipedia.org/wiki/Web_crawler)**
 3. **[Web Crawling by Princeton](http://www.cs.princeton.edu/courses/archive/spr11/cos435/Notes/web_crawling_topost.pdf)**
 
-## Setup Locally
+## Setup Locally :video_game:
 > To get the app working locally, or to run test cases, follow the instructions below.
 > After setting up the app, details on each API and how to use it can be found below in the **[API's available on this app](https://github.com/mayankamencherla/web-scraper#apis-available-on-this-app)** section.
 > If any of the commands below are denied due to a permission error, please prepend a sudo to the command.

@@ -77,6 +77,8 @@ class RequestQueue {
         }
     }
 
+    // TODO: Requeue the request in case it goes down
+
     /**
      * Crawls a link
      * @param link
