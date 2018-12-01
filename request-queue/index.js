@@ -55,7 +55,6 @@ class RequestQueue {
     async fetchChildren(link) {
 
         try {
-
             // TODO: Check if there's a better async library
             const response = await axios.get(link);
 
@@ -76,10 +75,10 @@ class RequestQueue {
             });
         } catch (e) {
             console.log(`Unable to fetch children for ${link}`);
+
+            throw e;
         }
     }
-
-    // TODO: Requeue the request in case it goes down
 
     /**
      * Crawls a link
@@ -88,22 +87,27 @@ class RequestQueue {
     async crawlLink(link) {
         if (this.alreadyCrawled(link)) return;
 
-        try {
-
-            // Run the web crawler on a different workflow
-            // This is so that each individual sub crawler has a retry option
-            // before the parallel crawler fails and retries all together
-            await Workflow.Build(this)
-                          .addParallelTask([link], 'fetchChildren', 3)
-                          .runTasks();
-        } catch (e) {
-            console.log(`Unable crawl link ${link}`);
-        }
+        // Run the web crawler on a different workflow
+        // This is so that each individual sub crawler has a retry option
+        // before the parallel crawler fails and retries all together
+        await Workflow.Build(this)
+                      .addParallelTask([link], 'fetchChildren', 3)
+                      .runTasks();
 
         // Once the children have been added into the discovered queue,
         // We push the link to the crawled array to indicate that we
         // are done crawling the link
-        this.crawled.push(link);
+        if (this.sitemap.parentInMap(link)) this.crawled.push(link);
+    }
+
+    /**
+     * Adds un-crawled urls back into the queue
+     * @param urls
+     */
+    reQueue(urls) {
+        for (const url of urls) {
+            if (!this.validateUrl(url)) this.discovered.push(url);
+        }
     }
 
     /**

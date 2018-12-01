@@ -68,7 +68,7 @@ class Workflow {
 
                 return true;
             } catch (e) {
-                console.log(`Task failed`, e);
+                console.log(`Task failed`);
                 // Use a retry
                 numTry--;
             }
@@ -76,12 +76,9 @@ class Workflow {
 
        console.log(`Unable to run task`);
 
-       // TODO: Queue the task to the end of the queue
-       // Rollback addition to crawled array
-       // TODO: Failure case where url is added crawled to array but we weren't able to crawl it fully
-       // Use a temp array, and only after crawling is done, modify sitemap
-       // Return a boolean flag to decide that crawling done, and only then pop from queue
-       // Else push back into the end of the queue
+       // Some / all of the input urls were not crawled, and
+       // therefore must be added back to the discovered queue
+       this.deps['reQueue'](elems);
 
        return false;
     }
