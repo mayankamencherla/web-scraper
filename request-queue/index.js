@@ -4,10 +4,13 @@ const url                = require('url');
 const { getAbsoluteUrl } = require('../helpers');
 const Workflow           = require('../workflow');
 const Configuration      = require('../configuration');
+const Timer              = require('./timer');
 
 const config = Configuration.Build();
 
 const concurrency = config.get('CONCURRENCY') || 1;
+
+const crawlTimeout = config.get('CRAWL_TIMEOUT') || 20000;
 
 /**
  * Maintains list of urls that have been crawled
@@ -21,6 +24,8 @@ class RequestQueue {
         this.base = base;
 
         this.setWorkflow();
+
+        this.timer = Timer.Build(crawlTimeout);
     }
 
     /**
@@ -132,8 +137,9 @@ class RequestQueue {
     async crawl(limit) {
         this.discovered.push(this.base);
 
-        // TODO: Add a timeout feature so that crawler exits
-        while (this.discovered.length > 0 && this.sitemap.numCrawled() < limit) {
+        this.timer.start();
+
+        while (this.discovered.length > 0 && this.sitemap.numCrawled() < limit && !this.timer.shouldTimeout()) {
 
             var remaining = limit - this.sitemap.numCrawled();
 
@@ -150,6 +156,8 @@ class RequestQueue {
         }
 
         this.clear();
+
+        this.timer.end();
 
         console.log(`We are done with crawling the site: ${this.base}`);
     }

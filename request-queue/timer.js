@@ -41,6 +41,17 @@ class Timer {
 
         return (now - this.startTime) >= this.timeout;
     }
+
+    /**
+     * Ends the timer
+     */
+    end() {
+        this.endTime = Date.now();
+
+        this.toggleRunning();
+
+        console.log(`The timer started at ${this.startTime} and ended at ${this.endTime}`);
+    }
 };
 
 module.exports = Timer;
