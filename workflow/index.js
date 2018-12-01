@@ -77,6 +77,11 @@ class Workflow {
        console.log(`Unable to run task`);
 
        // TODO: Queue the task to the end of the queue
+       // Rollback addition to crawled array
+       // TODO: Failure case where url is added crawled to array but we weren't able to crawl it fully
+       // Use a temp array, and only after crawling is done, modify sitemap
+       // Return a boolean flag to decide that crawling done, and only then pop from queue
+       // Else push back into the end of the queue
 
        return false;
     }

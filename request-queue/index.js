@@ -63,6 +63,8 @@ class RequestQueue {
 
             var $ = cheerio.load(response.data);
 
+            this.sitemap.addParent(link);
+
             $('a').each((i, elem) => {
                 var url = getAbsoluteUrl(elem.attribs.href, this.base);
 
@@ -86,16 +88,22 @@ class RequestQueue {
     async crawlLink(link) {
         if (this.alreadyCrawled(link)) return;
 
+        try {
+
+            // Run the web crawler on a different workflow
+            // This is so that each individual sub crawler has a retry option
+            // before the parallel crawler fails and retries all together
+            await Workflow.Build(this)
+                          .addParallelTask([link], 'fetchChildren', 3)
+                          .runTasks();
+        } catch (e) {
+            console.log(`Unable crawl link ${link}`);
+        }
+
+        // Once the children have been added into the discovered queue,
+        // We push the link to the crawled array to indicate that we
+        // are done crawling the link
         this.crawled.push(link);
-
-        this.sitemap.addParent(link);
-
-        // Run the web crawler on a different workflow
-        // This is so that each individual sub crawler has a retry option
-        // before the parallel crawler fails and retries all together
-        await Workflow.Build(this)
-                      .addParallelTask([link], 'fetchChildren', 3)
-                      .runTasks();
     }
 
     /**
