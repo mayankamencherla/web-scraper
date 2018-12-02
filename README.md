@@ -52,10 +52,22 @@ By default, the HTTP server is hosted on port 3000
 $ npm run test
 ```
 
+## Environment variables
+Environment variables are picked up from the .env file, which must be created in the app's root directory. The root directory has a sample file called .env.sample that contains all the necessary config variables, but they must be copied over into the .env file and altered according to needs in order to work
+
+Some key environment variables are listed and explained below:
+
+1. *CONCURRENCY* is the maximum number of concurrent urls that are crawled at once
+
+2. *CRAWL_TIMEOUT* is the maximum amount of time the crawler runs before it times out
+
+
 ## API's available on this app
 > This app supports 1 API currently
 
 1. GET <a href="http://localhost:3000/?url={url}" target="_blank">/?url={url}</a>
-   - Starts the crawler with the given url
-   - Prints the sitemap structure
-   - Example: http://localhost:3000/?url=https://www.monzo.com
+```
+   a. Starts the crawler with the given url
+   b. Prints the sitemap structure
+   c. Example: http://localhost:3000/?url=https://www.monzo.com
+```
