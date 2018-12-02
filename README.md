@@ -68,6 +68,7 @@ Some key environment variables are listed and explained below:
 1. GET <a href="http://localhost:3000/?url={url}" target="_blank">/?url={url}</a>
 ```
    a. Starts the crawler with the given url
-   b. Prints the sitemap structure
-   c. Example: http://localhost:3000/?url=https://www.monzo.com
+   b. Prints the sitemap structure in depth first format
+   c. Returns the sitemap as parent-child relationship as a json response
+   d. Example: http://localhost:3000/?url=https://www.monzo.com
 ```

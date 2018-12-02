@@ -15,7 +15,11 @@ app.get('/', async (req, res) => {
 
         await rq.crawl(20);
 
+        // Print the map in depth first manner
         map.print();
+
+        // Returns the sitemap with parent-child relationships in a hash table form
+        res.send(map.toJson());
     } else {
         console.log(`User input url invalid`);
 

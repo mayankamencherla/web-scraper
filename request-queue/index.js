@@ -60,7 +60,6 @@ class RequestQueue {
     async fetchChildren(link) {
 
         try {
-            // TODO: Check if there's a better async library
             const response = await axios.get(link);
 
             console.log(`Fetching the children of ${link}`);
