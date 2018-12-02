@@ -138,7 +138,9 @@ class RequestQueue {
 
         this.timer.start();
 
-        while (this.discovered.length > 0 && this.sitemap.numCrawled() < limit && !this.timer.shouldTimeout()) {
+        this.sitemap.setLimit(limit);
+
+        while (this.discovered.length > 0 && !this.sitemap.limitReached() && !this.timer.shouldTimeout()) {
 
             var remaining = limit - this.sitemap.numCrawled();
 
@@ -150,8 +152,8 @@ class RequestQueue {
             // Therefore, we would not be running those requests again
             // Only the failed request will be retried in the retry logic
             await this.workflow
-                .addParallelTask(urls, 'crawlLink', 3)
-                .runTasks();
+                      .addParallelTask(urls, 'crawlLink', 3)
+                      .runTasks();
         }
 
         this.clear();

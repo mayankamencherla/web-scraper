@@ -52,6 +52,30 @@
     }
 
     /**
+     * Sets the limit of the crawler
+     * @param limit
+     */
+    setLimit(limit) {
+        this.limit = limit;
+    }
+
+    /**
+     * Gets the limit of the crawler
+     * @return limit
+     */
+    getLimit() {
+        return this.limit;
+    }
+
+    /**
+     * Returns whether the crawler limit has been reached
+     * @return bool
+     */
+    limitReached() {
+        return this.numCrawled() >= this.getLimit();
+    }
+
+    /**
      * Prints the DFS tree
      * @param link
      * @param spaces
