@@ -6,6 +6,7 @@
     constructor(base) {
         this.map = {};
         this.base = base;
+        this.crawled = 0;
     }
 
     /**
@@ -23,6 +24,8 @@
      */
     addParent(link) {
         this.map[link] = [];
+
+        this.crawled++;
     }
 
     /**
@@ -46,9 +49,10 @@
 
     /**
      * Returns the number of crawled sites
+     * @return this.crawled
      */
     numCrawled() {
-        return Object.keys(this.map).length;
+        return this.crawled;
     }
 
     /**
